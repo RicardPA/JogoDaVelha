@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,21 +13,38 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TelaPrincipal extends JFrame {
-
+	
+	JButton btnJogoDaVelha_00 = new JButton("");
+	JButton btnJogoDaVelha_01 = new JButton("");
+	JButton btnJogoDaVelha_02 = new JButton("");
+	
+	JButton btnJogoDaVelha_10 = new JButton("");
+	JButton btnJogoDaVelha_11 = new JButton("");
+	JButton btnJogoDaVelha_12 = new JButton("");
+	
+	JButton btnJogoDaVelha_20 = new JButton("");
+	JButton btnJogoDaVelha_21 = new JButton("");
+	JButton btnJogoDaVelha_22 = new JButton("");
+	
+	JButton btnJogoDaVelha_Reiniciar = new JButton("Reiniciar o jogo");
+	
 	private JPanel TelaDoJogo;
 
-	public static void main(String[] args) {
+	public static TelaPrincipal AlteraTela(String[] args) {
+		TelaPrincipal frame = new TelaPrincipal();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaPrincipal frame = new TelaPrincipal();
 					frame.setVisible(true);
 					frame.setResizable(false);
+					System.out.println("OLA!");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+		return(frame);
 	}
 
 	public TelaPrincipal() {
@@ -34,25 +54,20 @@ public class TelaPrincipal extends JFrame {
 		TelaDoJogo.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(TelaDoJogo);
 		
-		JButton btnJogoDaVelha_00 = new JButton("");
+		btnJogoDaVelha_00.addActionListener(new Jogada_00());
+		btnJogoDaVelha_01.addActionListener(new Jogada_01());
+		btnJogoDaVelha_02.addActionListener(new Jogada_02());
 		
-		JButton btnJogoDaVelha_01 = new JButton("");
+		btnJogoDaVelha_10.addActionListener(new Jogada_10());
+		btnJogoDaVelha_11.addActionListener(new Jogada_11());
+		btnJogoDaVelha_12.addActionListener(new Jogada_12());
 		
-		JButton btnJogoDaVelha_02 = new JButton("");
+		btnJogoDaVelha_20.addActionListener(new Jogada_20());
+		btnJogoDaVelha_21.addActionListener(new Jogada_21());
+		btnJogoDaVelha_22.addActionListener(new Jogada_22());
 		
-		JButton btnJogoDaVelha_12 = new JButton("");
+		btnJogoDaVelha_Reiniciar.addActionListener(new Resetar());
 		
-		JButton btnJogoDaVelha_11 = new JButton("");
-		
-		JButton btnJogoDaVelha_10 = new JButton("");
-		
-		JButton btnJogoDaVelha_22 = new JButton("");
-		
-		JButton btnJogoDaVelha_21 = new JButton("");
-		
-		JButton btnJogoDaVelha_20 = new JButton("");
-		
-		JButton btnJogoDaVelha_Reiniciar = new JButton("Reiniciar o jogo");
 		GroupLayout gl_TelaDoJogo = new GroupLayout(TelaDoJogo);
 		gl_TelaDoJogo.setHorizontalGroup(
 			gl_TelaDoJogo.createParallelGroup(Alignment.TRAILING)
@@ -103,5 +118,77 @@ public class TelaPrincipal extends JFrame {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		TelaDoJogo.setLayout(gl_TelaDoJogo);
+	}
+	
+	// Todas as jogadas possíveis
+	class Jogada_00 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_00.setText("X");
+		}	
+	}
+	
+	class Jogada_01 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_01.setText("X");
+		}	
+	}
+	
+	class Jogada_02 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_02.setText("x");
+		}	
+	}
+	
+	class Jogada_10 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_10.setText("X");
+		}	
+	}
+	
+	class Jogada_11 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_11.setText("X");
+		}	
+	}
+	
+	class Jogada_12 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_12.setText("X");
+		}	
+	}
+	
+	class Jogada_20 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_20.setText("X");
+		}	
+	}
+	
+	class Jogada_21 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_21.setText("X");
+		}	
+	}
+	
+	class Jogada_22 implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_22.setText("X");
+		}	
+	}
+	
+	// Reiniciar o Jogo
+	class Resetar implements ActionListener {
+		public void actionPerformed(ActionEvent aev) {
+			btnJogoDaVelha_00.setText("");
+			btnJogoDaVelha_01.setText("");
+			btnJogoDaVelha_02.setText("");
+			
+			btnJogoDaVelha_10.setText("");
+			btnJogoDaVelha_11.setText("");
+			btnJogoDaVelha_12.setText("");
+			
+			btnJogoDaVelha_20.setText("");
+			btnJogoDaVelha_21.setText("");
+			btnJogoDaVelha_22.setText("");
+		}	
 	}
 }
