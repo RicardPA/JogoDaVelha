@@ -122,10 +122,7 @@ class Servidor
       conexao.close();
       socketTCP.close();
       socketUDP.close();
-      
-      conexao.close();
-      socketTCP.close();
-      socketUDP.close();
+
       System.out.println("FIM DO PROGRAMA");
       
    }
