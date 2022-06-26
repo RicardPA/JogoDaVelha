@@ -65,18 +65,34 @@ class Servidor
       return mensagem;
    }
 
-   public static boolean isJogadaValida(String s){
-      boolean resposta=false;
-      if(s.equalsIgnoreCase("Fim de jogo")){
-         resposta=true;
+   public static void renderizar(TelaPrincipal t, String s){
+	  String auxS[] = s.split(" ");
+	  
+	  for(int i = 0; i < auxS.length; i++) {
+		  auxS[i].replace(" ", "");
+	  }
+	  
+      if(s.length() == 8 && auxS[0].equals("BTN")) {
+    	  if(auxS[1].equals("00")) {
+    		  t.btnJogoDaVelha_00.setText(auxS[2]);
+    	  } else if(auxS[1].equals("01")) {
+    		  t.btnJogoDaVelha_01.setText(auxS[2]);
+    	  } else if(auxS[1].equals("02")) {
+    		  t.btnJogoDaVelha_02.setText(auxS[2]);
+    	  } else if(auxS[1].equals("10")) {
+    		  t.btnJogoDaVelha_10.setText(auxS[2]);
+    	  } else if(auxS[1].equals("11")) {
+    		  t.btnJogoDaVelha_11.setText(auxS[2]);
+    	  } else if(auxS[1].equals("12")) {
+    		  t.btnJogoDaVelha_12.setText(auxS[2]);
+    	  } else if(auxS[1].equals("20")) {
+    		  t.btnJogoDaVelha_20.setText(auxS[2]);
+    	  } else if(auxS[1].equals("21")) {
+    		  t.btnJogoDaVelha_21.setText(auxS[2]);
+    	  } else if(auxS[1].equals("22")) {
+    		  t.btnJogoDaVelha_22.setText(auxS[2]);
+    	  }
       }
-      else if(s.length()==3 && s.charAt(0)=='J' && s.charAt(1)==' '){
-         char aux = s.charAt(2);
-         if((int)aux <57 && (int)aux>47){
-            resposta=true;
-         }
-      }
-      return resposta;
    }
 
    public static void main(String argv[]) throws Exception
@@ -102,16 +118,21 @@ class Servidor
       //envio de jogadas via UDP
       do{
          System.out.println("Digite a sua jogada:");
-         String minhaJogada = entrada.nextLine();
-         enviaMensagem(conexao, minhaJogada);
+         
+         while(telaDoJogo.resp.equals(""));
+         enviaMensagem(conexao, telaDoJogo.resp);
+         System.out.println("Enviei: " + telaDoJogo.resp);
+         telaDoJogo.resp = "";
+         
          //enviaMensagemUDP(socketUDP, minhaJogada, ipCliente);
-         System.out.println("Enviei: "+minhaJogada);
-
+         
          resposta=recebeMensagem(conexao);
-         //resposta = recebeMensagemUDP(socketUDP);
          System.out.println("Recebi: " + resposta);
-         if(resposta.equalsIgnoreCase("Fim do jogo")==false){
-            telaDoJogo.btnJogoDaVelha_00.setText(resposta);
+         
+         //resposta = recebeMensagemUDP(socketUDP);
+         
+         if(resposta.equalsIgnoreCase("Fim do jogo") == false){
+        	renderizar(telaDoJogo, resposta);
             //renderiza a tela *******************************************
          }
          else{
