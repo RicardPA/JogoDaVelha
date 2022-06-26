@@ -124,35 +124,35 @@ public class TelaPrincipal extends JFrame {
 	class Jogada_00 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_00.setText("X");
-			resp = "BTN 00 X";
+			resp = "BTN 00 X\n";
 		}	
 	}
 	
 	class Jogada_01 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_01.setText("X");
-			resp = "BTN 01 X";
+			resp = "BTN 01 X\n";
 		}	
 	}
 	
 	class Jogada_02 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_02.setText("x");
-			resp = "BTN 02 X";
+			resp = "BTN 02 X\n";
 		}	
 	}
 	
 	class Jogada_10 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_10.setText("X");
-			resp = "BTN 10 X";
+			resp = "BTN 10 X\n";
 		}	
 	}
 	
 	class Jogada_11 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_11.setText("X");
-			resp = "BTN 11 X";
+			resp = "BTN 11 X\n";
 		}	
 	}
 	
@@ -166,21 +166,21 @@ public class TelaPrincipal extends JFrame {
 	class Jogada_20 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_20.setText("X");
-			resp = "BTN 20 X";
+			resp = "BTN 20 X\n";
 		}	
 	}
 	
 	class Jogada_21 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_21.setText("X");
-			resp = "BTN 21 X";
+			resp = "BTN 21 X\n";
 		}	
 	}
 	
 	class Jogada_22 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
 			btnJogoDaVelha_22.setText("X");
-			resp = "BTN 22 X";
+			resp = "BTN 22 X\n";
 		}	
 	}
 	
