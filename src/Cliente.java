@@ -1,14 +1,15 @@
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
-
+import java.util.concurrent.TimeUnit;
 import javax.swing.WindowConstants;
 
 class Cliente
 {
-   private static int portaServidor = 6789;
+   private static int portaServidor = 6700;
    private static String IPServidor = "192.168.15.138";//computador desktop do Lucas tem o endereco 192.168.15.93
-   private static int minhaPorta = 6700;//mudar? no servidor
+   private static int minhaPorta = 6500;//mudar? no servidor
+   private static String jogador = "O";
 
    public static Scanner entrada = new Scanner(System.in);
 
@@ -21,9 +22,6 @@ class Cliente
       String resposta= new String();
       try {
          BufferedReader entradaB =  new BufferedReader(new InputStreamReader(socketServidor.getInputStream()));
-         /*while(entrada.readLine().equals("")){
-            entrada =  new BufferedReader(new InputStreamReader(conexao.getInputStream()));
-         }*/
          resposta = entradaB.readLine();
       } catch (Exception e) {
          System.out.println("Nao recebi mensagem TCP!");
@@ -138,21 +136,21 @@ class Cliente
    public static void main(String argv[]) throws Exception
    {
       String resposta = new String();
-      //ServerSocket socketTCP = new ServerSocket(minhaPortaServidor);
       DatagramSocket socketUDP = new DatagramSocket(minhaPorta);
       //InetAddress ipCliente = InetAddress.getByName(IPServidor);
-      TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
-      telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       
       //inicia uma conexao TCP para garantir sincronismo com o cliente
-      System.out.println("(CLIENTE)Vou tentar me conectar");
       Socket conexao = new Socket(IPServidor, portaServidor);
-      System.out.println("(CLIENTE)Consegui me conectar");
       enviaMensagem(conexao, "INICIAR JOGO");
-      System.out.println("(CLIENTE)Enviei INICIAR JOGO");
+      System.out.println("(TCP)Enviei: INICIAR JOGO");
       resposta = recebeMensagem(conexao);
-      System.out.println("(TCP)Recebi: " + resposta);
-      //conexao.close();
+      System.out.println("(TCP)Recebi:"+resposta);
+
+      TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
+      telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+      telaDoJogo.jogador=jogador;
+
+      TimeUnit.SECONDS.sleep(2);
       
       //envio de jogadas via UDP
       do{
@@ -162,6 +160,7 @@ class Cliente
          if(resposta.equalsIgnoreCase("RESET")){
             resetTela(telaDoJogo);
             enviaMensagem(conexao, "RESET");
+            System.out.println("Enviei: RESET");
          }
          else if(resposta.equalsIgnoreCase("fim do jogo")){
             encerrarJogo(telaDoJogo);
@@ -169,17 +168,24 @@ class Cliente
          else if(telaDoJogo.isVisible()){
             renderizar(telaDoJogo, resposta);
             resposta="";
-            while(resposta.equals("")){
+            while(resposta.equals("") && telaDoJogo.isVisible()){
                resposta=TelaPrincipal.resp;
                System.out.print("");//não remover pois é parte fundamental do código (NÃO É BRINCADEIRA)
             }
-            //System.out.println("resp= "+TelaPrincipal.resp);
-            enviaMensagem(conexao, TelaPrincipal.resp);
-            //System.out.println("Enviei: " + TelaPrincipal.resp);
-            TelaPrincipal.resp = "";
+            resposta+=jogador+"\n";
+            if(telaDoJogo.isVisible()){
+               enviaMensagem(conexao, TelaPrincipal.resp);
+               if(TelaPrincipal.resp.equalsIgnoreCase("RESET")){
+                  resetTela(telaDoJogo);
+               }
+               System.out.println("Enviei: " + TelaPrincipal.resp);
+               TelaPrincipal.resp = "";
+            }
          }
       }while(telaDoJogo.isVisible());
-      
+      enviaMensagem(conexao, "fim do jogo");
+      System.out.println("Enviei: fim do jogo");
+
       conexao.close();
       socketUDP.close();
       System.out.println("FIM DO PROGRAMA");

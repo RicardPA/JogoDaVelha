@@ -1,13 +1,15 @@
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
-
+import java.util.concurrent.TimeUnit;
 import javax.swing.WindowConstants;
+//import javax.swing.text.html.parser.TagElement;
 
 class Servidor
 {
    private static int minhaPortaServidor = 6700;
    private static int portaCliente = 6500;//mudar? no cliente
+   private static String jogador= "X";
 
    public static Scanner entrada = new Scanner(System.in);
 
@@ -15,9 +17,6 @@ class Servidor
       String resposta= new String();
       try {
          BufferedReader entrada =  new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-         /*while(entrada.readLine().equals("")){
-            entrada =  new BufferedReader(new InputStreamReader(conexao.getInputStream()));
-         }*/
          resposta = entrada.readLine();
       } catch (Exception e) {
          System.out.println("Nao recebi mensagem TCP!");
@@ -138,8 +137,6 @@ class Servidor
       ServerSocket socketTCP = new ServerSocket(minhaPortaServidor);
       DatagramSocket socketUDP = new DatagramSocket(minhaPortaServidor+1);
       //InetAddress ipCliente;
-      TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
-      telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       
       //inicia uma conexao TCP para garantir sincronismo com o cliente
       System.out.println("estou esperando por uma conexao");
@@ -149,24 +146,33 @@ class Servidor
       System.out.println("(TCP)Recebi: " + resposta);
       enviaMensagem(conexao, "INICIAR JOGO");
       System.out.println("(TCP)Enviei: INICIAR JOGO");
+
+      TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
+      telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+      telaDoJogo.jogador=jogador;
+
+      TimeUnit.SECONDS.sleep(2);
       
       //envio de jogadas via UDP
       do{        
          resposta="";
-         while(resposta.equals("")){
+         while(resposta.equals("") && telaDoJogo.isVisible()){
             resposta=TelaPrincipal.resp;
             System.out.print("");//não remover pois é parte fundamental do código (NÃO É BRINCADEIRA)
          }
-         enviaMensagem(conexao, TelaPrincipal.resp);
+         if(telaDoJogo.isVisible()){
+            resposta+=jogador+"\n";
+            enviaMensagem(conexao, TelaPrincipal.resp);
+            System.out.println("Enviei: "+TelaPrincipal.resp);
+         }
          TelaPrincipal.resp = "";
          
-         resposta=recebeMensagem(conexao);
-         System.out.println("Recebi: " + resposta);
-         
          if(telaDoJogo.isVisible()){
+            resposta=recebeMensagem(conexao);
+            System.out.println("Recebi: " + resposta);
+            
             if(resposta.equalsIgnoreCase("RESET")){
                resetTela(telaDoJogo);
-               enviaMensagem(conexao, "RESET");
             }
             else if(resposta.equalsIgnoreCase("fim do jogo")){
                encerrarJogo(telaDoJogo);
@@ -175,11 +181,10 @@ class Servidor
                renderizar(telaDoJogo, resposta);
             }
          }
-         else{
-            enviaMensagem(conexao, "fim do jogo");
-         }
       }while(telaDoJogo.isVisible());
-      
+      enviaMensagem(conexao, "fim do jogo");
+      System.out.println("Enviei: fim do jogo");
+
       conexao.close();
       socketTCP.close();
       socketUDP.close();
@@ -188,17 +193,3 @@ class Servidor
       
    }
 }
-
-
-/*
-   JOGO DA VELHA
-
-   FUNCIONALIDADES:
-   -No incio do programa, conectar os dois usuários atraves de TCP
-   -Enviar as jogadas de cada jogador utilizando UDP
-      ->Utilizar mensagens de confirmação quando um jogador receber a jogada do outro
-      ->Depois de realizar uma jogada, se não receber a confirmação do outro jogador, então envia outro UDP
-   -A cada jogada (feita ou recebida), atualizar o estado do jogo na maquina local
-
-
-*/

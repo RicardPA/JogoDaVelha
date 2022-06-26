@@ -14,6 +14,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TelaPrincipal extends JFrame {
 	public static String resp = "";
+	public String jogador = new String();
 	
 	JButton btnJogoDaVelha_00 = new JButton("");
 	JButton btnJogoDaVelha_01 = new JButton("");
@@ -123,82 +124,73 @@ public class TelaPrincipal extends JFrame {
 	// Todas as jogadas possíveis
 	class Jogada_00 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_00.setText("X");
-			TelaPrincipal.resp = "BTN 00 X\n";
+			btnJogoDaVelha_00.setText(jogador);
+			TelaPrincipal.resp = "BTN 00 ";
 			btnJogoDaVelha_00.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_01 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_01.setText("X");
-			resp = "BTN 01 X\n";
+			btnJogoDaVelha_01.setText(jogador);
+			resp = "BTN 01 ";
 			btnJogoDaVelha_01.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_02 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_02.setText("x");
-			resp = "BTN 02 X\n";
+			btnJogoDaVelha_02.setText(jogador);
+			resp = "BTN 02 ";
 			btnJogoDaVelha_02.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_10 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_10.setText("X");
-			resp = "BTN 10 X\n";
+			btnJogoDaVelha_10.setText(jogador);
+			resp = "BTN 10 ";
 			btnJogoDaVelha_10.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_11 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_11.setText("X");
-			resp = "BTN 11 X\n";
+			btnJogoDaVelha_11.setText(jogador);
+			resp = "BTN 11 ";
 			btnJogoDaVelha_11.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_12 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_12.setText("X");
-			resp = "BTN 12 X\n";
+			btnJogoDaVelha_12.setText(jogador);
+			resp = "BTN 12 ";
 			btnJogoDaVelha_12.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_20 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_20.setText("X");
-			resp = "BTN 20 X\n";
+			btnJogoDaVelha_20.setText(jogador);
+			resp = "BTN 20 ";
 			btnJogoDaVelha_20.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_21 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_21.setText("X");
-			resp = "BTN 21 X\n";
+			btnJogoDaVelha_21.setText(jogador);
+			resp = "BTN 21 ";
 			btnJogoDaVelha_21.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
 	class Jogada_22 implements ActionListener {
 		public void actionPerformed(ActionEvent aev) {
-			btnJogoDaVelha_22.setText("X");
-			resp = "BTN 22 X\n";
+			btnJogoDaVelha_22.setText(jogador);
+			resp = "BTN 22 ";
 			btnJogoDaVelha_22.setEnabled(false);
-			System.out.println("alterei resp: "+ resp);
 		}	
 	}
 	
