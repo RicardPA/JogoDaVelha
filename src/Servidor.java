@@ -101,6 +101,38 @@ class Servidor
     	  }
       }
    }
+   
+   public static boolean verificarResposta(String s){
+   	  boolean resp = false;
+	  String auxS[] = s.split(" ");
+	  
+	  for(int i = 0; i < auxS.length; i++) {
+		  auxS[i].replace(" ", "");
+	  }
+	  
+      if(s.length() == 8 && auxS[0].equals("BTN")) {
+    	  if(auxS[1].equals("00")) {
+              resp = true;
+    	  } else if(auxS[1].equals("01")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("02")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("10")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("11")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("12")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("20")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("21")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("22")) {
+    		  resp = true;
+    	  }
+      }
+      return (resp);
+   }
 
    public static void resetTela(TelaPrincipal t){
       t.btnJogoDaVelha_00.setEnabled(true);
@@ -206,8 +238,11 @@ class Servidor
          
          if(telaDoJogo.isVisible()){
         	bloqueiaDesbloqueiaBotoes(telaDoJogo, true);
+        	
+        	do {
             resposta=recebeMensagem(conexao);
-            bloqueiaDesbloqueiaBotoes(telaDoJogo, false);
+        	} while(resposta.length()==0);
+            
             System.out.println("Recebi: " + resposta);
             
             if(resposta.equalsIgnoreCase("RESET")){
@@ -216,8 +251,9 @@ class Servidor
             else if(resposta.equalsIgnoreCase("fim do jogo")){
                encerrarJogo(telaDoJogo);
             }
-            else{
+            else if (verificarResposta(resposta)){
                renderizar(telaDoJogo, resposta);
+               bloqueiaDesbloqueiaBotoes(telaDoJogo, false);
             }
          }
       }while(telaDoJogo.isVisible());

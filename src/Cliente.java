@@ -163,6 +163,38 @@ class Cliente
 	  }
    }
    
+   public static boolean verificarResposta(String s){
+   	  boolean resp = false;
+	  String auxS[] = s.split(" ");
+	  
+	  for(int i = 0; i < auxS.length; i++) {
+		  auxS[i].replace(" ", "");
+	  }
+	  
+      if(s.length() == 8 && auxS[0].equals("BTN")) {
+    	  if(auxS[1].equals("00")) {
+              resp = true;
+    	  } else if(auxS[1].equals("01")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("02")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("10")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("11")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("12")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("20")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("21")) {
+    		  resp = true;
+    	  } else if(auxS[1].equals("22")) {
+    		  resp = true;
+    	  }
+      }
+      return (resp);
+   }
+   
    public static void encerrarJogo(TelaPrincipal t){
       t.setVisible(false);
       t.dispose();
@@ -188,9 +220,9 @@ class Cliente
       //envio de jogadas via UDP
       do{
     	 bloqueiaDesbloqueiaBotoes(telaDoJogo, true);
-         resposta = recebeMensagem(conexao);
-         bloqueiaDesbloqueiaBotoes(telaDoJogo, false);
-         TimeUnit.SECONDS.sleep(2);
+    	 do {
+          resposta=recebeMensagem(conexao);
+     	 } while(resposta.length()==0);
          System.out.println("Recebi: " + resposta);
 
          if(resposta.equalsIgnoreCase("RESET")){
@@ -201,8 +233,9 @@ class Cliente
          else if(resposta.equalsIgnoreCase("fim do jogo")){
             encerrarJogo(telaDoJogo);
          }
-         else if(telaDoJogo.isVisible()){
+         else if(telaDoJogo.isVisible() && verificarResposta(resposta)) {
             renderizar(telaDoJogo, resposta);
+            bloqueiaDesbloqueiaBotoes(telaDoJogo, false);
             resposta="";
             while(resposta.equals("") && telaDoJogo.isVisible()){
                resposta=TelaPrincipal.resp;
@@ -224,6 +257,7 @@ class Cliente
             
             TelaPrincipal.resp = "";
          }
+         resposta = "";
       }while(telaDoJogo.isVisible());
       enviaMensagem(conexao, "fim do jogo");
       System.out.println("Enviei: fim do jogo");
