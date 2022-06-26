@@ -7,7 +7,7 @@ import javax.swing.WindowConstants;
 class Cliente
 {
    private static int portaServidor = 6700;
-   private static String IPServidor = "192.168.15.138";//computador desktop do Lucas tem o endereco 192.168.15.93
+   private static String IPServidor = "192.168.100.2";//computador desktop do Lucas tem o endereco 192.168.15.93
    private static int minhaPorta = 6500;//mudar? no servidor
    private static String jogador = "O";
 
@@ -127,7 +127,42 @@ class Cliente
       t.btnJogoDaVelha_22.setEnabled(true);
       t.btnJogoDaVelha_22.setText("");
    }
- 
+   
+   public static void bloqueiaDesbloqueiaBotoes(TelaPrincipal t, boolean b){
+	  if(b) {
+	      t.btnJogoDaVelha_00.setEnabled(false);
+	      t.btnJogoDaVelha_01.setEnabled(false);
+	      t.btnJogoDaVelha_02.setEnabled(false);
+	      t.btnJogoDaVelha_10.setEnabled(false);
+	      t.btnJogoDaVelha_11.setEnabled(false);
+	      t.btnJogoDaVelha_12.setEnabled(false);
+	      t.btnJogoDaVelha_20.setEnabled(false);
+	      t.btnJogoDaVelha_21.setEnabled(false);
+	      t.btnJogoDaVelha_22.setEnabled(false);
+	      t.btnJogoDaVelha_Reiniciar.setEnabled(false);
+	  } else {
+		  if(t.btnJogoDaVelha_00.getText().length() == 0)
+			  t.btnJogoDaVelha_00.setEnabled(true);
+		  if(t.btnJogoDaVelha_01.getText().length() == 0)
+			  t.btnJogoDaVelha_01.setEnabled(true);
+		  if(t.btnJogoDaVelha_02.getText().length() == 0)
+			  t.btnJogoDaVelha_02.setEnabled(true);
+		  if(t.btnJogoDaVelha_10.getText().length() == 0)
+			  t.btnJogoDaVelha_10.setEnabled(true);
+		  if(t.btnJogoDaVelha_11.getText().length() == 0)
+			  t.btnJogoDaVelha_11.setEnabled(true);
+		  if(t.btnJogoDaVelha_12.getText().length() == 0)
+			  t.btnJogoDaVelha_12.setEnabled(true);
+		  if(t.btnJogoDaVelha_20.getText().length() == 0)
+			  t.btnJogoDaVelha_20.setEnabled(true);
+		  if(t.btnJogoDaVelha_21.getText().length() == 0)
+			  t.btnJogoDaVelha_21.setEnabled(true);
+		  if(t.btnJogoDaVelha_22.getText().length() == 0)
+			  t.btnJogoDaVelha_22.setEnabled(true);
+		  t.btnJogoDaVelha_Reiniciar.setEnabled(true);
+	  }
+   }
+   
    public static void encerrarJogo(TelaPrincipal t){
       t.setVisible(false);
       t.dispose();
@@ -149,12 +184,13 @@ class Cliente
       TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
       telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       telaDoJogo.jogador=jogador;
-
-      TimeUnit.SECONDS.sleep(2);
       
       //envio de jogadas via UDP
       do{
+    	 bloqueiaDesbloqueiaBotoes(telaDoJogo, true);
          resposta = recebeMensagem(conexao);
+         bloqueiaDesbloqueiaBotoes(telaDoJogo, false);
+         TimeUnit.SECONDS.sleep(2);
          System.out.println("Recebi: " + resposta);
 
          if(resposta.equalsIgnoreCase("RESET")){
@@ -172,15 +208,21 @@ class Cliente
                resposta=TelaPrincipal.resp;
                System.out.print("");//não remover pois é parte fundamental do código (NÃO É BRINCADEIRA)
             }
-            resposta+=jogador+"\n";
+            
             if(telaDoJogo.isVisible()){
-               enviaMensagem(conexao, TelaPrincipal.resp);
+               if(!resposta.equalsIgnoreCase("RESET")) {
+	        	  resposta+=jogador+"\n";
+	           } else {
+	        	  resposta+="\n";
+	           }
+               enviaMensagem(conexao, resposta);
                if(TelaPrincipal.resp.equalsIgnoreCase("RESET")){
                   resetTela(telaDoJogo);
                }
-               System.out.println("Enviei: " + TelaPrincipal.resp);
-               TelaPrincipal.resp = "";
+               System.out.println("Enviei: " + resposta);
             }
+            
+            TelaPrincipal.resp = "";
          }
       }while(telaDoJogo.isVisible());
       enviaMensagem(conexao, "fim do jogo");
