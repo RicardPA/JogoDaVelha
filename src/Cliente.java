@@ -140,7 +140,7 @@ class Cliente
       String resposta = new String();
       //ServerSocket socketTCP = new ServerSocket(minhaPortaServidor);
       DatagramSocket socketUDP = new DatagramSocket(minhaPorta);
-      InetAddress ipCliente = InetAddress.getByName(IPServidor);
+      //InetAddress ipCliente = InetAddress.getByName(IPServidor);
       TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
       telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       

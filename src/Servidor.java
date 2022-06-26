@@ -137,14 +137,14 @@ class Servidor
       String resposta = new String();
       ServerSocket socketTCP = new ServerSocket(minhaPortaServidor);
       DatagramSocket socketUDP = new DatagramSocket(minhaPortaServidor+1);
-      InetAddress ipCliente;
+      //InetAddress ipCliente;
       TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
       telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       
       //inicia uma conexao TCP para garantir sincronismo com o cliente
       System.out.println("estou esperando por uma conexao");
       Socket conexao = socketTCP.accept();
-      ipCliente= InetAddress.getByName(conexao.getInetAddress().getHostAddress());
+      //ipCliente= InetAddress.getByName(conexao.getInetAddress().getHostAddress());
       resposta = recebeMensagem(conexao);
       System.out.println("(TCP)Recebi: " + resposta);
       enviaMensagem(conexao, "INICIAR JOGO");
