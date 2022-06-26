@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
+import javax.swing.WindowConstants;
+
 class Cliente
 {
    private static int portaServidor = 6789;
@@ -67,12 +69,80 @@ class Cliente
       return mensagem;
    }
 
+   public static void renderizar(TelaPrincipal t, String s){
+      String auxS[] = s.split(" ");
+      
+      for(int i = 0; i < auxS.length; i++) {
+         auxS[i].replace(" ", "");
+      }
+      
+      if(s.length() == 8 && auxS[0].equals("BTN")) {
+         if(auxS[1].equals("00")) {
+            t.btnJogoDaVelha_00.setText(auxS[2]);
+            t.btnJogoDaVelha_00.setEnabled(false);
+         } else if(auxS[1].equals("01")) {
+            t.btnJogoDaVelha_01.setText(auxS[2]);
+            t.btnJogoDaVelha_01.setEnabled(false);
+         } else if(auxS[1].equals("02")) {
+            t.btnJogoDaVelha_02.setText(auxS[2]);
+            t.btnJogoDaVelha_02.setEnabled(false);
+         } else if(auxS[1].equals("10")) {
+            t.btnJogoDaVelha_10.setText(auxS[2]);
+            t.btnJogoDaVelha_10.setEnabled(false);
+         } else if(auxS[1].equals("11")) {
+            t.btnJogoDaVelha_11.setText(auxS[2]);
+            t.btnJogoDaVelha_11.setEnabled(false);
+         } else if(auxS[1].equals("12")) {
+            t.btnJogoDaVelha_12.setText(auxS[2]);
+            t.btnJogoDaVelha_12.setEnabled(false);
+         } else if(auxS[1].equals("20")) {
+            t.btnJogoDaVelha_20.setText(auxS[2]);
+            t.btnJogoDaVelha_20.setEnabled(false);
+         } else if(auxS[1].equals("21")) {
+            t.btnJogoDaVelha_21.setText(auxS[2]);
+            t.btnJogoDaVelha_21.setEnabled(false);
+         } else if(auxS[1].equals("22")) {
+            t.btnJogoDaVelha_22.setText(auxS[2]);
+            t.btnJogoDaVelha_22.setEnabled(false);
+         }
+      }
+   }
+ 
+
+   public static void resetTela(TelaPrincipal t){
+      t.btnJogoDaVelha_00.setEnabled(true);
+      t.btnJogoDaVelha_00.setText("");
+      t.btnJogoDaVelha_01.setEnabled(true);
+      t.btnJogoDaVelha_01.setText("");
+      t.btnJogoDaVelha_02.setEnabled(true);
+      t.btnJogoDaVelha_02.setText("");
+      t.btnJogoDaVelha_10.setEnabled(true);
+      t.btnJogoDaVelha_10.setText("");
+      t.btnJogoDaVelha_11.setEnabled(true);
+      t.btnJogoDaVelha_11.setText("");
+      t.btnJogoDaVelha_12.setEnabled(true);
+      t.btnJogoDaVelha_12.setText("");
+      t.btnJogoDaVelha_20.setEnabled(true);
+      t.btnJogoDaVelha_20.setText("");
+      t.btnJogoDaVelha_21.setEnabled(true);
+      t.btnJogoDaVelha_21.setText("");
+      t.btnJogoDaVelha_22.setEnabled(true);
+      t.btnJogoDaVelha_22.setText("");
+   }
+ 
+   public static void encerrarJogo(TelaPrincipal t){
+      t.setVisible(false);
+      t.dispose();
+   }
+
    public static void main(String argv[]) throws Exception
    {
       String resposta = new String();
       //ServerSocket socketTCP = new ServerSocket(minhaPortaServidor);
       DatagramSocket socketUDP = new DatagramSocket(minhaPorta);
-      InetAddress ipCliente = InetAddress.getByName(IPServidor);;
+      InetAddress ipCliente = InetAddress.getByName(IPServidor);
+      TelaPrincipal telaDoJogo = TelaPrincipal.AlteraTela(argv);
+      telaDoJogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       
       //inicia uma conexao TCP para garantir sincronismo com o cliente
       System.out.println("(CLIENTE)Vou tentar me conectar");
@@ -83,32 +153,36 @@ class Cliente
       resposta = recebeMensagem(conexao);
       System.out.println("(TCP)Recebi: " + resposta);
       //conexao.close();
-      //renderiza a tela *******************************************
       
       //envio de jogadas via UDP
       do{
          resposta = recebeMensagem(conexao);
-         //resposta = recebeMensagemUDP(socketUDP);
-
-         //envia confirmação
          System.out.println("Recebi: " + resposta);
-         if(resposta.equalsIgnoreCase("Fim do jogo")==false){
-            //renderiza a tela *******************************************
-            System.out.println("Digite a sua jogada:");
-            String minhaJogada = entrada.nextLine();
-            enviaMensagem(conexao, minhaJogada);
-            //enviaMensagemUDP(socketUDP, minhaJogada, ipCliente);
-            System.out.println("Enviei: "+minhaJogada);
+
+         if(resposta.equalsIgnoreCase("RESET")){
+            resetTela(telaDoJogo);
+            enviaMensagem(conexao, "RESET");
          }
-         else{
-            enviaMensagem(conexao, "fim do jogo");
+         else if(resposta.equalsIgnoreCase("fim do jogo")){
+            encerrarJogo(telaDoJogo);
          }
-      }while(resposta.equalsIgnoreCase("Fim do jogo")==false);
+         else if(telaDoJogo.isVisible()){
+            renderizar(telaDoJogo, resposta);
+            resposta="";
+            while(resposta.equals("")){
+               resposta=TelaPrincipal.resp;
+               System.out.print("");//não remover pois é parte fundamental do código (NÃO É BRINCADEIRA)
+            }
+            //System.out.println("resp= "+TelaPrincipal.resp);
+            enviaMensagem(conexao, TelaPrincipal.resp);
+            //System.out.println("Enviei: " + TelaPrincipal.resp);
+            TelaPrincipal.resp = "";
+         }
+      }while(telaDoJogo.isVisible());
+      
       conexao.close();
       socketUDP.close();
       System.out.println("FIM DO PROGRAMA");
    }
    
 }
-
-//192.168.15.93 IP que o roteador me deu (IP falso)
