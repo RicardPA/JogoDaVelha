@@ -43,7 +43,6 @@ public class TelaPrincipal extends JFrame {
 				}
 			}
 		});
-		
 		return(frame);
 	}
 

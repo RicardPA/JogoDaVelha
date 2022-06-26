@@ -93,7 +93,7 @@ class Servidor
       ipCliente= InetAddress.getByName(conexao.getInetAddress().getHostAddress());
       resposta = recebeMensagem(conexao);
       System.out.println("(TCP)Recebi: " + resposta);
-      
+      //renderiza a tela *******************************************
       enviaMensagem(conexao, "INICIAR JOGO");
       System.out.println("(TCP)Enviei: INICIAR JOGO");
       /*conexao.close();
@@ -112,6 +112,7 @@ class Servidor
          System.out.println("Recebi: " + resposta);
          if(resposta.equalsIgnoreCase("Fim do jogo")==false){
             telaDoJogo.btnJogoDaVelha_00.setText(resposta);
+            //renderiza a tela *******************************************
          }
          else{
             enviaMensagem(conexao, "fim do jogo");
@@ -122,6 +123,9 @@ class Servidor
       socketTCP.close();
       socketUDP.close();
       
+      conexao.close();
+      socketTCP.close();
+      socketUDP.close();
       System.out.println("FIM DO PROGRAMA");
       
    }
