@@ -7,7 +7,7 @@ import javax.swing.WindowConstants;
 class Cliente
 {
    private static int portaServidor = 6700;
-   private static String IPServidor = "192.168.100.2";//computador desktop do Lucas tem o endereco 192.168.15.93
+   private static String IPServidor = "192.168.15.93";//computador desktop do Lucas tem o endereco 192.168.15.93
    private static int minhaPorta = 6500;//mudar? no servidor
    private static String jogador = "O";
 

@@ -166,7 +166,7 @@ class Servidor
 	      t.btnJogoDaVelha_20.setEnabled(false);
 	      t.btnJogoDaVelha_21.setEnabled(false);
 	      t.btnJogoDaVelha_22.setEnabled(false);
-	      t.btnJogoDaVelha_Reiniciar.setEnabled(false);
+	      //t.btnJogoDaVelha_Reiniciar.setEnabled(false);
 	  } else {
 		  if(t.btnJogoDaVelha_00.getText().length() == 0)
 			  t.btnJogoDaVelha_00.setEnabled(true);
@@ -186,7 +186,7 @@ class Servidor
 			  t.btnJogoDaVelha_21.setEnabled(true);
 		  if(t.btnJogoDaVelha_22.getText().length() == 0)
 			  t.btnJogoDaVelha_22.setEnabled(true);
-		  t.btnJogoDaVelha_Reiniciar.setEnabled(true);
+		  //t.btnJogoDaVelha_Reiniciar.setEnabled(true);
 	  }
    }
 
